@@ -34,9 +34,9 @@ class Robot(object):
 		# Publisher the low-level commands to robots
 		self.pub_commands = rospy.Publisher('/swarm/command', Command, queue_size=10)
 		# Wheel Radio (cm)
-		self.wheel_diameter = 6.64
+		self.wheel_diameter = 5.935
 		# Separation between wheels (cm)
-		self.wheel_separtion = 6.6
+		self.wheel_separtion = 6.955
 		# Max linear speed
 		self.max_linear = self.wheel_diameter
 		# Max angular speed

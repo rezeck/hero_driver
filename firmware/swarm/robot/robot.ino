@@ -15,7 +15,7 @@
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h" // 
-#include "printf.h"
+//#include "printf.h"
 #include <Servo.h>
 /************************************************************************/
 
@@ -27,7 +27,7 @@
 
 /* Wheel Setup */
 #define WHEEL_R_PIN 6     /* Pin to connect right motor */
-#define WHEEL_R_MID 1545  /* Neutral position of right motor */
+#define WHEEL_R_MID 1535  /* Neutral position of right motor */
 #define WHEEL_L_PIN 7     /* Pin to connect left motor */
 #define WHEEL_L_MID 1500  /* Neutral position of left motor */
 
@@ -78,9 +78,9 @@ Servo wheel_right, wheel_left;
  ************************************************************************/
 void setup() {
   /* Serial initialization */
-  Serial.begin(115200);
-  printf_begin();
-  printf("[Robot] Starting Robot Node\n");
+  //Serial.begin(115200);
+  //printf_begin();
+  //printf("[Robot] Starting Robot Node\n");
 
   /* Setup servo motor */
   wheel_right.attach(WHEEL_R_PIN);
@@ -96,6 +96,9 @@ void setup() {
    * getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
    */
   radio.setPALevel(RF24_PA_LOW);
+  
+  /* Set RF communication channel. 0-127 */
+  radio.setChannel(60);
 
   /* Set speed rate RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps */
   radio.setDataRate(RF24_2MBPS);
@@ -167,7 +170,7 @@ void check_radio(void){
 
     /* Check if it is to this robot */
     if (msg._id != ROBOT_ID){ // message isn't to me
-      printf("[Status] Msg isn't to me!\n");
+      //printf("[Status] Msg isn't to me!\n");
       return;
     }
     
@@ -179,7 +182,7 @@ void check_radio(void){
         
         //printf("----------------------\n");
         //printf("[Status] Become data:\n");  
-        printf("[Status] Data: {%d, %d, %d}\n", msg._id, msg._data1, msg._data2);
+        //printf("[Status] Data: {%d, %d, %d}\n", msg._id, msg._data1, msg._data2);
         //printf("----------------------\n");
       break;
       case REQUEST_TYPE:

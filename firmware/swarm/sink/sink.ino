@@ -30,7 +30,8 @@
 #define SINK_ID 00
 
 /* LED PINOUT */
-#define RED_LED_PIN 8
+#define RED_LED_PIN 6
+#define YEL_LED_PIN 8
 
 /* Radio Setup */
 #define READ_ADDRESS 0xF0F0F0F0E1LL  /* Radio pipe address to read */
@@ -93,6 +94,7 @@ void setup() {
 
   /* Pinout setup */
   pinMode(RED_LED_PIN, OUTPUT);
+  pinMode(YEL_LED_PIN, OUTPUT);
   
   /* Starting ros node */
   nh.initNode();
@@ -112,6 +114,9 @@ void setup() {
    * getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default. 
    */
   radio.setPALevel(RF24_PA_LOW);
+
+  /* Set RF communication channel. 0-127 */
+  radio.setChannel(60);
 
   /* Set speed rate RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps */
   radio.setDataRate(RF24_2MBPS);
@@ -148,6 +153,7 @@ void setup() {
   
   /* Start led with high */
   digitalWrite(RED_LED_PIN, HIGH);  
+  digitalWrite(YEL_LED_PIN, HIGH);  
 }
 /************************************************************************/
 
@@ -184,6 +190,7 @@ void loop() {
  * C A L L B A C K S
  ************************************************************************/
 void command_cb(const swarm_driver::Command& cmd){
+  digitalWrite(YEL_LED_PIN, HIGH-digitalRead(YEL_LED_PIN));   
   /* First, stop listening so we can talk. */
   radio.stopListening();
   /* Copy datas from ROS interface */
@@ -199,6 +206,7 @@ void command_cb(const swarm_driver::Command& cmd){
 }
 
 void request_cb(const std_msgs::UInt8& _id){
+  digitalWrite(YEL_LED_PIN, HIGH-digitalRead(YEL_LED_PIN));   
   /* First, stop listening so we can talk. */
   radio.stopListening();
   /* Copy datas from ROS interface */
